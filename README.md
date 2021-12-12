@@ -10,3 +10,5 @@ To run tasks you need JDK, Maven and Allure to be installed and environment vari
 ```
 ./run_tests_with_report.bat
 ```
+
+or just run this file from the file explorer.
