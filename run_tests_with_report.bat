@@ -1,2 +1,2 @@
-mvn clean test
-allure serve /target/surefire-reports/
+call mvn clean test
+call allure serve target/surefire-reports/
