@@ -27,20 +27,20 @@ public class WorkShiftsPage {
     }
 
     public void pressAddButton() {
-        driver.findElement(addButton).submit();
+        driver.findElement(addButton).click();
     }
 
     public void pressDeleteButton() {
-        driver.findElement(deleteButton).submit();
+        driver.findElement(deleteButton).click();
     }
 
     public void pressModalDeleteButton() {
-        driver.findElement(modalDeleteButton).submit();
+        driver.findElement(modalDeleteButton).click();
     }
 
     public void enterWorkTime(String from, String to) {
-        driver.findElement(workHoursTo).sendKeys(from);
-        driver.findElement(workHoursFrom).sendKeys(to);
+        driver.findElement(workHoursFrom).sendKeys(from);
+        driver.findElement(workHoursTo).sendKeys(to);
     }
 
     public void enterName(String name) {
@@ -49,7 +49,7 @@ public class WorkShiftsPage {
 
     public void addEmployee(String name) {
         driver.findElement(availableEmployees).sendKeys(name);
-        driver.findElement(assignEmployeeButton).submit();
+        driver.findElement(assignEmployeeButton).click();
     }
 
     public void pressSaveButton() {
@@ -68,14 +68,12 @@ public class WorkShiftsPage {
         pressSaveButton();
     }
 
-    public int getShiftIndex(List<String> shift) {
-        shift = new ArrayList<>(shift);
-        shift.add(0, "");
+    public int getShiftIndex(String shift) {
         List<WebElement> rows = driver.findElement(workShiftsTable).findElements(By.tagName("tr"));
         int rowIndex = 0;
         for(WebElement row : rows) {
             List<String> cols = row.findElements(By.tagName("td")).stream().map(val -> val.getText()).toList();
-            if (cols.equals(shift)) {
+            if (cols.size() > 0 && cols.get(1).equals(shift)) {
                 break;
             }
             rowIndex++;
@@ -88,16 +86,15 @@ public class WorkShiftsPage {
         return index < driver.findElement(workShiftsTable).findElements(By.tagName("tr")).size();
     }
 
-    public void selectWorkShift(List<String> shift) {
+    public void selectWorkShift(String shift) {
         int index = getShiftIndex(shift);
         if(!isShiftPresent(index))
             throw new IllegalStateException("Unable to delete nonexistent record");
         driver.findElement(workShiftsTable).findElements(By.tagName("tr"))
-                .get(index).findElement(By.tagName("input")).submit();
+                .get(index).findElement(By.tagName("input")).click();
     }
 
-    public void deleteWorkShift(List<String> shift) {
-        selectWorkShift(shift);
+    public void deleteSelected() {
         pressDeleteButton();
         pressModalDeleteButton();
     }
