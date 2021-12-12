@@ -5,8 +5,8 @@ git clone <url> --branch WebUI
 ``` 
 and then do the following instructions.
 
-## Windows/Linux via terminal session
-To run tasks you need JDK and Maven to be installed and environment variables `CLASSPATH`, `PATH` and `JAVA_HOME` to be set. Then open terminal session in cloned repo and type command below:
+## Windows
+To run tasks you need JDK, Maven and Allure to be installed and environment variables `CLASSPATH`, `PATH` and `JAVA_HOME` to be set. Then open terminal session in cloned repo and type command below:
 ```
-mvn test
+./run_tests_with_report.bat
 ```
