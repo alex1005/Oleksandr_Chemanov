@@ -11,6 +11,7 @@ Feature: OrangeHRM.com Work Shift Table Tests
     When I press add button
     And I enter shift name "Bernoulli"
     And enter time from "06:00" to "18:00"
+    And add up to 4 employees from available
     And press save button
     Then I see shift "Bernoulli" in the table
 

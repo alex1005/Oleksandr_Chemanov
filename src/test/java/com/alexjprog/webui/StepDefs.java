@@ -1,6 +1,5 @@
 package com.alexjprog.webui;
 
-import com.alexjprog.webui.pages.DashboardPage;
 import com.alexjprog.webui.pages.LoginPage;
 import com.alexjprog.webui.pages.WorkShiftsPage;
 import io.cucumber.java.PendingException;
@@ -9,6 +8,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class StepDefs {
 
@@ -20,6 +22,7 @@ public class StepDefs {
     static {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
     }
 
 
@@ -95,6 +98,15 @@ public class StepDefs {
     @When("^I press add button$")
     public void pressAddButton() throws Exception {
         workShiftsPage.pressAddButton();
+    }
+
+    @When("add up to {int} employees from available")
+    public void addAllAvailableEmployees(int amount) throws Exception {
+        List<String> employees = workShiftsPage.getAvailableEmployees();
+        int n = Math.min(amount, employees.size());
+        for(int i = 0; i < n; i++) {
+            workShiftsPage.addEmployee(employees.get(i));
+        }
     }
 
 }

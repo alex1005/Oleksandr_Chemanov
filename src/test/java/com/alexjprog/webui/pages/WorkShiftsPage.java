@@ -98,4 +98,9 @@ public class WorkShiftsPage {
         pressDeleteButton();
         pressModalDeleteButton();
     }
+
+    public List<String> getAvailableEmployees() {
+        return driver.findElement(availableEmployees)
+                .findElements(By.tagName("option")).stream().map(val -> val.getText()).toList();
+    }
 }
