@@ -10,13 +10,9 @@ import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StepDefs {
 
     private LoginPage loginPage;
-    private DashboardPage dashboardPage;
     private WorkShiftsPage workShiftsPage;
 
     private static ChromeDriver driver;
@@ -45,7 +41,7 @@ public class StepDefs {
 
     @Then("^I get logged in$")
     public void isLoggedIn() throws Exception {
-        dashboardPage = loginPage.submitLogin();
+        loginPage.submitLogin();
     }
 
     @Given("^that I'm on Work Shifts page$")

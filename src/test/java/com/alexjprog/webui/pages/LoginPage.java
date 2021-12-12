@@ -25,9 +25,10 @@ public class LoginPage {
         return this;
     }
 
-    public DashboardPage submitLogin() {
+    public DashboardPage submitLogin() throws IllegalStateException{
         driver.findElement(loginButtonLocator).submit();
-        return new DashboardPage(driver);
+        if(driver.findElements(loginPanel).size() != 0) throw new IllegalStateException("Logging failed");
+        else return new DashboardPage(driver);
     }
 
     public DashboardPage loginAs(String username, String password) {
