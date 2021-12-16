@@ -1,11 +1,13 @@
 package com.alexjprog.webapi;
 
 import com.alexjprog.webapi.app.DropboxApp;
+import io.cucumber.java.bs.A;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
+import org.junit.Assert;
 
 import java.io.File;
 
@@ -19,7 +21,7 @@ public class DropboxStepDefs {
     @Given("I have a file {string}")
     public void exists(String name) {
         File file = new File(FILES+name);
-        if(!file.exists()) throw new IllegalArgumentException("File " + name + " does not exist");
+        Assert.assertTrue("EXISTS: File " + name + " does not exist", file.exists());
     }
 
     @When("I upload file {string} to Dropbox")
@@ -29,8 +31,8 @@ public class DropboxStepDefs {
 
     @Then("I see file {string} successfully uploaded")
     public void isSuccessfullyUploaded(String name) {
-        if(!APP.getLastResponse(new File(FILES+name).getAbsolutePath()).isSuccess())
-            throw new IllegalStateException("Failed to upload file "+name + " to Dropbox");
+        Assert.assertTrue("UPLOAD FILE: Failed to upload file "+name + " to Dropbox",
+                APP.getLastResponse(new File(FILES+name).getAbsolutePath()).isSuccess());
     }
 
     //GET_FILE_METADATA
@@ -38,8 +40,8 @@ public class DropboxStepDefs {
     @Given("I have an uploaded file {string}")
     public void isUploadedBefore(String name) {
         File file = new File(FILES+name);
-        if(APP.getLastResponse(file.getAbsolutePath()) == null || !APP.getLastResponse(file.getAbsolutePath()).isSuccess())
-            throw new IllegalArgumentException("File " + file.getName() + "is not uploaded");
+        Assert.assertFalse("IS FILE UPLOADED: File " + file.getName() + "is not uploaded", APP.getLastResponse(file.getAbsolutePath()) == null
+                || !APP.getLastResponse(file.getAbsolutePath()).isSuccess());
     }
 
     @When("I request metadata of file {string} by its id")
@@ -49,8 +51,8 @@ public class DropboxStepDefs {
 
     @Then("I receive metadata for file {string}")
     public void isMetadataReceived(String name) {
-        if(!APP.getLastResponse(new File(FILES+name).getAbsolutePath()).isSuccess())
-            throw new IllegalStateException("Failed to get metadata for file "+name);
+        Assert.assertTrue("RECEIVE FILE METADATA: Failed to get metadata for file "+name,
+                APP.getLastResponse(new File(FILES+name).getAbsolutePath()).isSuccess());
     }
 
     @When("I ask to delete file {string}")
@@ -60,8 +62,8 @@ public class DropboxStepDefs {
 
     @Then("I see file {string} is successfully deleted")
     public void isDeletedSuccessfully(String name) {
-        if(!APP.getLastResponse(new File(FILES+name).getAbsolutePath()).isSuccess())
-            throw new IllegalStateException("Failed to delete file " + name);
+        Assert.assertTrue("DELETE FILE: Failed to delete file " + name,
+                APP.getLastResponse(new File(FILES+name).getAbsolutePath()).isSuccess());
     }
 
     @When("I ask for list of files and folders in {string}")
@@ -71,7 +73,6 @@ public class DropboxStepDefs {
 
     @Then("I receive list of files and folders")
     public void isListReceived() {
-        if(!lastRequest.isSuccess())
-            throw new IllegalArgumentException("Given wrong path");
+        Assert.assertTrue("RECEIVE LIST: Given wrong path", lastRequest.isSuccess());
     }
 }
